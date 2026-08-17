@@ -1,0 +1,49 @@
+{
+  "workflow_id": "transfer",
+  "version": "1.0",
+  "inputs": {
+    "amount": 100,
+    "from_account": 14121,
+    "to_account": 14898
+  },
+  "steps": [
+    {
+      "action": "click",
+      "target": {
+        "strategy": "link_text",
+        "value": "Transfer Funds"
+      }
+    },
+    {
+      "action": "input",
+      "target": {
+        "strategy": "id",
+        "value": "amount"
+      },
+      "value": "{{amount}}"
+    },
+    {
+      "action": "select",
+      "target": {
+        "strategy": "id",
+        "value": "fromAccountId"
+      },
+      "value": "{{from_account}}"
+    },
+    {
+      "action": "select",
+      "target": {
+        "strategy": "id",
+        "value": "toAccountId"
+      },
+      "value": "{{to_account}}"
+    },
+    {
+      "action": "click",
+      "target": {
+        "strategy": "xpath",
+        "value": "//input[@value='Transfer']"
+      }
+    }
+  ]
+}
