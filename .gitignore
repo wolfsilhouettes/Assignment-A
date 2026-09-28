@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+*.pyc
+debug_timeout.png
+config/config.json
+artifacts/
+.env

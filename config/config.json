@@ -1,5 +1,28 @@
 {
-    "website": "https://parabank.parasoft.com/parabank/index.htm",
-    "username": "JaneDoe",
-    "password": "JaneDoe12!"
+    "element_search_criteria": {
+        "username": {
+            "likely_categories": {
+                "input": "fill"
+            },
+            "excluded_words": [
+                "forgot"
+            ]
+        },
+        "password": {
+            "likely_categories": {
+                "input": "fill"
+            },
+            "excluded_words": [
+                "forgot"
+            ]
+        },
+        "login": {
+            "likely_categories": {
+                "a, button, .btn-success, input": "click"
+            },
+            "excluded_words": [
+                "forgot"
+            ]
+        }
+    }
 }

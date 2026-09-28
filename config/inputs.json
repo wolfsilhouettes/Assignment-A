@@ -1,49 +1,125 @@
 {
-  "workflow_id": "transfer",
-  "version": "1.0",
-  "inputs": {
-    "amount": 100,
-    "from_account": 14121,
-    "to_account": 14898
-  },
-  "steps": [
-    {
-      "action": "click",
-      "target": {
-        "strategy": "link_text",
-        "value": "Transfer Funds"
+  "goals": {
+    "workflow_id": "transfer",
+    "illegal_words": [
+      "until",
+      "times"
+    ],
+    "required_fields": {
+      "transfer": {
+        "variable": "{{amount}}",
+        "expected_input_type": "int",
+        "acceptable_characters": [
+          "$",
+          ","
+        ]
+      },
+      "from": {
+        "variable": "{{from_account}}",
+        "expected_input_type": "variant",
+        "# lower limit": 5,
+        "# upper limit": 17,
+        "acceptable_characters": [
+          "#",
+          "number",
+          ",",
+          ".",
+          "account",
+          "?",
+          "!"
+        ]
+      },
+      "to": {
+        "variable": "{{to_account}}",
+        "expected_input_type": "variant",
+        "# lower limit": 5,
+        "# upper limit": 17,
+        "acceptable_characters": [
+          "#",
+          "number",
+          ",",
+          "account",
+          "?",
+          "!",
+          "."
+        ]
       }
     },
-    {
-      "action": "input",
-      "target": {
-        "strategy": "id",
-        "value": "amount"
+    "artifact_type": "browser_workflow",
+    "version": "1.0",
+    "steps": [
+      {
+        "action": "navigate to",
+        "target": {
+          "strategy": "navigate_to",
+          "value": "https://parabank.parasoft.com/parabank/index.htm",
+          "purpose": "navigate to the website"
+        }
       },
-      "value": "{{amount}}"
-    },
-    {
-      "action": "select",
-      "target": {
-        "strategy": "id",
-        "value": "fromAccountId"
+      {
+        "action": "verify",
+        "target": {
+          "strategy": "verify_login",
+          "value": "whether logged in",
+          "purpose": "verify whether the user logged in."
+        }
       },
-      "value": "{{from_account}}"
-    },
-    {
-      "action": "select",
-      "target": {
-        "strategy": "id",
-        "value": "toAccountId"
+      {
+        "action": "click",
+        "target": {
+          "strategy": "a, button, .btn-success, input",
+          "purpose": "transfer",
+          "value": "Transfer Funds"
+        }
       },
-      "value": "{{to_account}}"
-    },
-    {
-      "action": "click",
-      "target": {
-        "strategy": "xpath",
-        "value": "//input[@value='Transfer']"
+      {
+        "action": "input",
+        "target": {
+          "strategy": "id",
+          "purpose": "amount",
+          "value": "amount"
+        },
+        "value": "{{amount}}"
+      },
+      {
+        "action": "select",
+        "target": {
+          "strategy": "id",
+          "purpose": "from account",
+          "value": "fromAccountId"
+        },
+        "value": "{{from_account}}"
+      },
+      {
+        "action": "select",
+        "target": {
+          "strategy": "id",
+          "purpose": "to account",
+          "value": "toAccountId"
+        },
+        "value": "{{to_account}}"
+      },
+      {
+        "action": "human_review",
+        "human_review": true,
+        "reason": "Confirm the transfer before submitting."
+      },
+      {
+        "action": "click",
+        "target": {
+          "strategy": "a, button, .btn-success, input",
+          "purpose": "transfer",
+          "value": "transfer"
+        }
+      },
+      {
+        "action": "success_check",
+        "target": {
+          "strategy": "text",
+          "purpose": "determine whether the task was successfully completed.",
+          "value": "Transfer Complete!"
+        }
       }
-    }
-  ]
+    ]
+  }
 }

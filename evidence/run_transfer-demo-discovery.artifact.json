@@ -1,0 +1,121 @@
+{
+  "artifact_type": "browser_workflow",
+  "version": "1.1",
+  "workflow_id": "transfer",
+  "goal": "transfer a synthetic amount between synthetic accounts",
+  "required_parameters": [
+    "amount",
+    "from_account",
+    "to_account"
+  ],
+  "inputs": {
+    "amount": {
+      "type": "integer",
+      "description": "Synthetic transfer amount for offline evidence.",
+      "required": true,
+      "sensitive": true
+    },
+    "from_account": {
+      "type": "string",
+      "description": "Synthetic source account identifier.",
+      "required": true,
+      "sensitive": true
+    },
+    "to_account": {
+      "type": "string",
+      "description": "Synthetic destination account identifier.",
+      "required": true,
+      "sensitive": true
+    }
+  },
+  "steps": [
+    {
+      "action": "verify",
+      "target": {
+        "strategy": "verify_login",
+        "value": "whether logged in",
+        "purpose": "confirm the user is logged in",
+        "locator_strategy": "verification_strategy",
+        "robustness": "The named verification checks page state rather than relying on a single control locator."
+      }
+    },
+    {
+      "action": "click",
+      "target": {
+        "selector": "a[href*='transfer.htm']",
+        "purpose": "open the transfer funds page",
+        "locator_strategy": "css_then_semantic",
+        "robustness": "Try the specific CSS selector first, then use the semantic purpose as a fallback if the selector is stale."
+      }
+    },
+    {
+      "action": "input",
+      "target": {
+        "selector": "input[name='amount']",
+        "purpose": "enter the transfer amount",
+        "locator_strategy": "css_then_semantic",
+        "robustness": "Try the specific CSS selector first, then use the semantic purpose as a fallback if the selector is stale."
+      },
+      "value": "{{amount}}"
+    },
+    {
+      "action": "select",
+      "target": {
+        "selector": "select[name='fromAccountId']",
+        "purpose": "select the source account",
+        "locator_strategy": "css_then_semantic",
+        "robustness": "Try the specific CSS selector first, then use the semantic purpose as a fallback if the selector is stale."
+      },
+      "value": "{{from_account}}"
+    },
+    {
+      "action": "select",
+      "target": {
+        "selector": "select[name='toAccountId']",
+        "purpose": "select the destination account",
+        "locator_strategy": "css_then_semantic",
+        "robustness": "Try the specific CSS selector first, then use the semantic purpose as a fallback if the selector is stale."
+      },
+      "value": "{{to_account}}"
+    },
+    {
+      "action": "human_review",
+      "reason": "Please confirm the completed transfer details before submitting the transfer."
+    },
+    {
+      "action": "click",
+      "target": {
+        "selector": "input[type='submit'][value='Transfer']",
+        "purpose": "submit the transfer",
+        "locator_strategy": "css_then_semantic",
+        "robustness": "Try the specific CSS selector first, then use the semantic purpose as a fallback if the selector is stale."
+      }
+    }
+  ],
+  "success_check": {
+    "strategy": "text",
+    "value": "Transfer Complete!"
+  },
+  "outputs": {
+    "transfer_status": {
+      "type": "string",
+      "strategy": "success_check",
+      "description": "Confirmation that the transfer completed.",
+      "sensitive": false,
+      "required": true
+    }
+  },
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "transfer_status": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "transfer_status"
+    ],
+    "additionalProperties": false
+  },
+  "business_outcomes": []
+}

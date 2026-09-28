@@ -39,6 +39,7 @@ def create_driver(registry_path: str) -> WebDriver:
         return webdriver.Firefox()
 
     else:
+        # Raise an error to stop the code locally
         raise RuntimeError(
-            "Could not determine a supported default browser."
+            "[CODE ERROR] Browser type unsupported by application."
         )
